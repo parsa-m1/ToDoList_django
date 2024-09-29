@@ -1,6 +1,20 @@
 from django.db import models
-
 from django.contrib.auth.models import User
+from datetime import timedelta, timezone
+from django.utils import timezone
+
+# model manager
+class TodoDoneManager(models.Manager):
+
+    def get_queryset(self):
+        return super().get_queryset().filter(is_done=False)
+
+class TodoRecentManager(models.Manager):
+
+    def get_queryset(self):
+
+        recent_todos_id = [todo.id for todo in Todo.objects.all() if todo.is_recent]
+        return super().get_queryset().filter(id__in = recent_todos_id)
 
 class Todo(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -11,5 +25,14 @@ class Todo(models.Model):
     image = models.ImageField(upload_to='static/images/', blank=True, null=True)
     slug = models.SlugField(max_length=100, unique=True)
 
+    objects = models.Manager()
+    objects_done = TodoDoneManager()
+    objects_recent = TodoRecentManager()
+
     def __str__(self):
         return self.title
+
+    @property
+    def is_recent(self):
+        return True if self.pub_date + timedelta(days=1) > timezone.now() else False
+
