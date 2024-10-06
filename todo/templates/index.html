@@ -10,8 +10,13 @@
             you can use below buttons to go to signup and login page
         </p>
         <div class="d-grid gap-2 d-sm-flex justify-content-sm-center" style="margin-top: 50px">
-          <button type="button" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold">Signup</button>
-          <button type="button" class="btn btn-outline-light btn-lg px-4">Login</button>
+            <a href="{% url 'register' %}">
+                <button type="button" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold">Signup</button>
+            </a>
+
+            <a href="{% url 'login' %}">
+              <button type="button" class="btn btn-outline-light btn-lg px-4">Login</button>
+            </a>
         </div>
       </div>
     </div>
