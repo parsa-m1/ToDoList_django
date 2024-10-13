@@ -17,17 +17,19 @@ class TodoRecentManager(models.Manager):
         return super().get_queryset().filter(id__in = recent_todos_id)
 
 class Todo(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='todos')
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
     is_done = models.BooleanField(default=False)
     pub_date = models.DateTimeField('date published', auto_now_add=True)
-    image = models.ImageField(upload_to='static/images/', blank=True, null=True)
     slug = models.SlugField(max_length=100, unique=True)
 
     objects = models.Manager()
     objects_done = TodoDoneManager()
     objects_recent = TodoRecentManager()
+
+    class Meta:
+        ordering = ['is_done', '-pub_date']
 
     def __str__(self):
         return self.title
