@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+                <div class="col">
+                  <div class="card" style="margin: 10px">
+                  <div class="card-body">
+                    <h2 class="card-title">{{ todo.title }}</h2>
+                    <p class="card-description" style="margin-top: 20px">
+                        {{ todo.description }}
+                    </p>
+                  </div>
+
+                  <div class="card-footer">
+                    <small class="text-body-secondary col">uploaded {{ todo.pub_date|timesince }} ago</small>
+
+
+                      <form action="" method="post">{% csrf_token %}
+                        {% if todo.is_done %}
+                            <button  type="submit" class="btn btn-warning" style="float: right; width: 200px"
+                                     name="status" value="undone">Undone</button>
+                        {% else %}
+                            <button  type="submit" class="btn btn-success" style="float: right; width: 200px"
+                                     name="status" value="done">Done</button>
+                        {% endif %}
+
+                      </form>
+
+
+                     <a href="{% url 'update' todo.id %}" class="btn btn-outline-secondary" style="
+                     float: right; width: 70px; margin-right: 35px"
+                     >edit</a>
+                     <a href="{% url 'delete' todo.id %}" class="btn btn-outline-danger" style="
+                     float: right; width: 70px; margin-right: 5px"
+                     >delete</a>
+                  </div>
+
+                </div>
+              </div>
+
+{% endblock %}
